@@ -1,21 +1,24 @@
 import React from "react";
 import Logo from "../../../asset/img/logo.svg";
 import Search from "../../../asset/img/search.svg";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Header = () => {
+  const location = useLocation();
   const navigate = useNavigate();
+
+  console.log(location.pathname === "/about");
 
   const moveToAbout = () => {
     navigate("/about");
   };
 
   const moveToLogin = () => {
-    navigate("/about");
+    navigate("/login");
   };
 
   const moveToSignup = () => {
-    navigate("/about");
+    navigate("/signup");
   };
 
   const moveToQuestions = () => {
@@ -25,9 +28,15 @@ const Header = () => {
   return (
     <div className="flex justify-around items-center h-[5rem] shadow-[3px_3px_2px_#dadada]">
       <img src={Logo} className="hover:cursor-pointer select-none" onClick={moveToAbout} />
-      <p className="text-xl font-semibold hover:cursor-pointer select-none" onClick={moveToAbout}>
-        About Hompage
-      </p>
+      {location.pathname === "/about" ? (
+        <p className="text-xl font-semibold hover:cursor-pointer select-none" onClick={moveToQuestions}>
+          Move To Questions
+        </p>
+      ) : (
+        <p className="text-xl font-semibold hover:cursor-pointer select-none" onClick={moveToAbout}>
+          About Hompage
+        </p>
+      )}
       <div className="flex w-[55rem] justify-between">
         <div className="flex relative">
           <img src={Search} width={18} className="absolute top-[0.9rem] left-[0.9rem] hover:cursor-pointer select-none" onClick={moveToQuestions} />

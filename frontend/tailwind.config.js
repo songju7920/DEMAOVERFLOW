@@ -11,7 +11,10 @@ module.exports = {
         646464: "#646464",
         B2B2B2: "#B2B2B2",
         E7C000: "#E7C000",
-        DBDBDB: "#DBDBDB"
+        DBDBDB: "#DBDBDB",
+        FFDD2C: "#FFDD2C",
+        EDC806: "#EDC806",
+        949494: "#949494"
       }
     }
   },
