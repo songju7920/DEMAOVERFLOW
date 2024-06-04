@@ -57,6 +57,10 @@ const Questions = () => {
     setPagination(result);
   };
 
+  const moveToCreatePost = () => {
+    navigate("/createPost");
+  };
+
   useEffect(() => {
     // api 연동 필요
     setQuestions([]);
@@ -87,7 +91,9 @@ const Questions = () => {
                   </div>
                 )}
               </div>
-              <div className="flex justify-center items-center w-[7rem] h-[3rem] font-semibold bg-F8DB43 rounded-xl hover:cursor-pointer">질문하기</div>
+              <div className="flex justify-center items-center w-[7rem] h-[3rem] font-semibold bg-F8DB43 rounded-xl hover:cursor-pointer" onClick={moveToCreatePost}>
+                질문하기
+              </div>
             </div>
           </div>
           <div className="w-full mt-[1rem] h-[30rem]">

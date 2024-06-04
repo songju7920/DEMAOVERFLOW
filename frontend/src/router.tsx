@@ -4,6 +4,7 @@ import NotFoundError from "./page/Error/notFound.tsx";
 import Questions from "./page/questions/questions.tsx";
 import About from "./page/about/about.tsx";
 import Login from "./page/login/login.tsx";
+import CreatePost from "./page/createPost/createPost.tsx";
 
 const Router = () => {
   return (
@@ -12,6 +13,7 @@ const Router = () => {
       <Route path="/about" element={<About />} />
       <Route path="/questions" element={<Questions />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/createPost" element={<CreatePost />} />
       <Route path="*" element={<NotFoundError />} />
     </Routes>
   );
