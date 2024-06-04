@@ -29,22 +29,21 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        return http
+        http
                 .cors(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
 
-                .authorizeHttpRequests((authorize) -> {
-                    authorize
-                            .requestMatchers("/user/login", "/user/signup", "/post/search").permitAll()
-                            .anyRequest().authenticated();
-                })
+                .authorizeHttpRequests((authorize) -> authorize
+                            .requestMatchers("/user/login", "/user/signup", "/post/search", "/error").permitAll()
+                            .anyRequest().authenticated()
+                )
 
-                .logout((logout) -> {logout
+                .logout((logout) -> logout
                         .logoutSuccessUrl("/")
-                        .invalidateHttpSession(true);
-                })
+                        .invalidateHttpSession(true)
+                )
 
                 .sessionManagement((session) -> {
                     session.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
@@ -54,8 +53,8 @@ public class SecurityConfig {
                     header.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin);
                 })
 
-                .addFilterBefore(new JwtFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class);
 
-                .build();
+        return http.build();
     }
 }
