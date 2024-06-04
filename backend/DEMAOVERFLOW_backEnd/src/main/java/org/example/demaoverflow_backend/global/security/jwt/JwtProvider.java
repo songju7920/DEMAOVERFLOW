@@ -51,7 +51,7 @@ public class JwtProvider {
     // 해당 유저에 대한 Authentication 가져오기
     public Authentication getAuthentication(String token) {
         Claims claim = getClaim(token);
-        UserDetails userDetails = customUserDetailService.loadUserByUsername(claim.getSubject()); // 나중에 Repository 생성되면 userId로 수정하기
+        UserDetails userDetails = customUserDetailService.loadUserByUser_id(Long.parseLong(claim.getSubject()));
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
