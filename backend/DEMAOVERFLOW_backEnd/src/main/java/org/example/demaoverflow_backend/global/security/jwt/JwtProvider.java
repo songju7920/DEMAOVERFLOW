@@ -31,7 +31,21 @@ public class JwtProvider {
                 .setSubject(Long.toString(user_id))
                 .claim("type", "Access")
                 .setExpiration(expireAt)
-                .signWith(SignatureAlgorithm.ES512, jwtProperties.getSecret())
+                .signWith(SignatureAlgorithm.HS256, jwtProperties.getSecret())
+                .compact();
+    }
+    // Refresh token 생성
+    public String GenerateRefresh(long user_id) {
+        // 만료시간 계산
+        long now = (new Date()).getTime();
+        Date expireAt = new Date(now + jwtProperties.getRefreshExpiration());
+
+        // jwt 생성
+        return Jwts.builder()
+                .setSubject(Long.toString(user_id))
+                .claim("type", "Refresh")
+                .setExpiration(expireAt)
+                .signWith(SignatureAlgorithm.HS256, jwtProperties.getSecret())
                 .compact();
     }
 

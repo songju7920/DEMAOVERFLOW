@@ -1,12 +1,22 @@
 package org.example.demaoverflow_backend.domain.user.service;
 
 import lombok.RequiredArgsConstructor;
+import org.example.demaoverflow_backend.domain.user.dto.request.LoginRequestDto;
 import org.example.demaoverflow_backend.domain.user.dto.request.SignupRequestDto;
-import org.example.demaoverflow_backend.domain.user.execption.UserAlreadyExists;
+import org.example.demaoverflow_backend.domain.user.dto.respond.LoginRespondDto;
+import org.example.demaoverflow_backend.domain.user.exception.PasswordMismatches;
+import org.example.demaoverflow_backend.domain.user.exception.UserAlreadyExists;
+import org.example.demaoverflow_backend.domain.user.exception.UserNotExists;
 import org.example.demaoverflow_backend.domain.user.model.User;
 import org.example.demaoverflow_backend.domain.user.repository.UserRepository;
+import org.example.demaoverflow_backend.global.security.jwt.JwtProperties;
+import org.example.demaoverflow_backend.global.security.jwt.JwtProvider;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @Service
 @RequiredArgsConstructor
@@ -14,11 +24,13 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtProvider jwtProvider;
+    private final JwtProperties jwtProperties;
 
     @Override
     public void signup(SignupRequestDto signupRequestDto) {
         String username = signupRequestDto.username();
-        String password = signupRequestDto.username();
+        String password = signupRequestDto.password();
 
         if (userRepository.existsByUsername(username)) {
             throw UserAlreadyExists.EXCEPTION;
