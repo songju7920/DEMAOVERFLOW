@@ -29,4 +29,27 @@ public class UserServiceImpl implements UserService {
                         .password(passwordEncoder.encode(password))
                         .build());
     }
+
+    @Override
+    public LoginRespondDto login(LoginRequestDto loginRequestDto) {
+        String username = loginRequestDto.username();
+        String password = loginRequestDto.password();
+
+        User user = userRepository.findUserByUsername(username)
+                .orElseThrow(() -> UserNotExists.Exception);
+
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            throw PasswordMismatches.Exception;
+        }
+
+        String accessToken = jwtProvider.GenerateAccess(user.getUserId());
+        String refreshToken = jwtProvider.GenerateRefresh(user.getUserId());
+
+        long now = (new Date()).getTime();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        String accessExpireAt = dateFormat.format(new Date(now + jwtProperties.getAccessExpiration()));
+        String refreshExpireAt = dateFormat.format(new Date(now + jwtProperties.getRefreshExpiration()));
+
+        return new LoginRespondDto(accessToken, refreshToken, accessExpireAt, refreshExpireAt);
+    }
 }

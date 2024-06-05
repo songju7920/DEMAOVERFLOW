@@ -8,6 +8,8 @@ import lombok.Getter;
 public enum ErrorCode {
 
     // user
+    PASSWORD_MISMATCHES(401, "비밀번호가 맞지 않습니다"),
+    USER_NOT_EXISTS(404, "존재하지 않는 유저 이름입니다"),
     USER_ALREADY_EXISTS(409, "이미 존재하는 유저 이름입니다"),
 
     // general
