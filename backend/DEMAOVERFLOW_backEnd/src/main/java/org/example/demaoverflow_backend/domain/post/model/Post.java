@@ -5,8 +5,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import org.example.demaoverflow_backend.domain.user.model.User;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+
+import java.sql.Timestamp;
 
 @Data
 @Entity
@@ -28,12 +32,20 @@ public class Post {
     @JoinColumn(name = "userId", nullable = false)
     User user;
 
+    @Column(nullable = false)
+    @ColumnDefault("0")
+    long views;
+
+    @Column(nullable = false)
+    String createdAt;
+
     protected Post () {}
 
     @Builder
-    public Post(String title, String contents, User user) {
+    public Post(String title, String contents, User user, String createdAt) {
         this.title = title;
         this.contents = contents;
         this.user = user;
+        this.createdAt = createdAt;
     }
 }

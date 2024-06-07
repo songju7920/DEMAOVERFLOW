@@ -6,6 +6,8 @@ import QuestionList from "../../components/question/questionList.tsx";
 import Pagination from "../../components/question/pagination.tsx";
 import { useLocation, useNavigate } from "react-router-dom";
 import DropdownBtn from "../../components/question/dropdownBtn.tsx";
+import { getPosts } from "../../api/post.ts";
+import { toast } from "react-toastify";
 
 const Questions = () => {
   interface question {
@@ -13,6 +15,7 @@ const Questions = () => {
     writer: string;
     view: number;
     createAt: string;
+    postId: number;
   }
 
   const navigate = useNavigate();
@@ -62,8 +65,16 @@ const Questions = () => {
   };
 
   useEffect(() => {
-    // api 연동 필요
-    setQuestions([]);
+    // 포스트 데이터 불러오기
+    getPosts("")
+      .then((res) => {
+        setQuestions(res.data.posts);
+      })
+      .catch((err) => {
+        toast.error(err);
+      });
+
+    // 페이지네이션 생성 & 불러오기
     makePagination();
   }, [page, orderBy]);
 
@@ -105,8 +116,8 @@ const Questions = () => {
               <div className="flex justify-center w-[10rem] text-lg font-bold">등록일</div>
             </div>
             <hr className="h-[0.09rem] bg-B2B2B2" />
-            {questions.slice((page - 1) * 10, 10 * page).map(({ title, writer, view, createAt }) => (
-              <QuestionList title={title} writer={writer} view={view} createAt={createAt} />
+            {questions.slice((page - 1) * 10, 10 * page).map(({ postId, title, writer, view, createAt }) => (
+              <QuestionList title={title} writer={writer} view={view} createAt={createAt} postId={postId} />
             ))}
           </div>
           <div className="flex justify-between w-[10rem] mt-[1.5rem]">{pagination.map((element) => element)}</div>

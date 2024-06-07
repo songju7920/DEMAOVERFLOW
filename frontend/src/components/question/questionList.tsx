@@ -1,13 +1,21 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 interface props {
+  postId: number;
   title: string;
   writer: string;
   view: number;
   createAt: string;
 }
 
-const QuestionList = ({ title, writer, view, createAt }: props) => {
+const QuestionList = ({ postId, title, writer, view, createAt }: props) => {
+  const navigate = useNavigate();
+
+  onclick = () => {
+    navigate(`/question/${postId}`);
+  };
+
   return (
     <>
       <div className="flex justify-between px-[3rem] py-[0.5rem] w-full hover:cursor-pointer">

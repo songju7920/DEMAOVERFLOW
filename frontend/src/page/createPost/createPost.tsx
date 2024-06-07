@@ -1,8 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import MDEditor from "@uiw/react-md-editor";
 import Header from "../../components/common/header/header.tsx";
+import { createPost } from "../../api/post.ts";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const CreatePost = () => {
+  const navigate = useNavigate();
+
   const [markdown, setMarkdown] = useState("");
   const [title, setTitle] = useState("");
 
@@ -10,8 +15,22 @@ const CreatePost = () => {
     setTitle(e.target.value);
   };
 
-  // api 연동 필요
-  const onClick = () => {};
+  const onClick = () => {
+    createPost({ title, contents: markdown })
+      .then(() => {
+        toast.success("글 등록에 성공했습니다 👍");
+        navigate("/questions?page=1");
+      })
+      .catch((err) => {
+        toast.error(err.response.data.message);
+      });
+  };
+
+  useEffect(() => {
+    if (!localStorage.getItem("accessToken")) {
+      navigate("/login");
+    }
+  }, []);
 
   return (
     <div className="w-full h-dvh">
@@ -24,7 +43,7 @@ const CreatePost = () => {
               height={"30rem"}
               value={markdown}
               onChange={(value) => {
-                setMarkdown(value);
+                if (value) setMarkdown(value);
               }}
             />
           </div>
