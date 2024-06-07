@@ -4,6 +4,8 @@ import logo from "../../asset/img/logoImg.svg";
 import openedEye from "../../asset/img/seeImg.svg";
 import closedEye from "../../asset/img/notSeeImg.svg";
 import { useNavigate } from "react-router-dom";
+import { login } from "../../api/user.ts";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -21,8 +23,19 @@ const Login = () => {
     setShowPW((prevShowPW) => !prevShowPW);
   };
 
-  const login = () => {
-    console.log(data);
+  const doLogin = () => {
+    login(data)
+      .then((res) => {
+        toast.success("로그인 성공 😁");
+        const { accessToken, refreshToken } = res.data;
+        localStorage.setItem("accessToken", accessToken);
+        localStorage.setItem("refreshToken", refreshToken);
+        navigate("/questions?page=1");
+      })
+      .catch((err) => {
+        const { message } = err.response.data;
+        toast.error(message);
+      });
   };
 
   return (
@@ -41,7 +54,7 @@ const Login = () => {
               <img src={showPW ? openedEye : closedEye} className="absolute right-3 bottom-[0.3rem] hover:cursor-pointer" onClick={onClick} />
             </div>
           </div>
-          <button className="w-[30rem] h-[2.5rem] bg-F0CA00 rounded-xl font-semibold text-white text-lg" onClick={login}>
+          <button className="w-[30rem] h-[2.5rem] bg-F0CA00 rounded-xl font-semibold text-white text-lg" onClick={doLogin}>
             Login
           </button>
           <div className="flex justify-between w-[16rem] select-none">

@@ -2,8 +2,12 @@ import React, { useState } from "react";
 import character from "../../asset/img/loginCharacter.svg";
 import logo from "../../asset/img/logoImg.svg";
 import PwInput from "../../components/signup/pwInput.tsx";
+import { signup } from "../../api/user.ts";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
+  const navigate = useNavigate();
   const [data, setData] = useState({ username: "", password: "", passwordChack: "" });
 
   const onChange = (e) => {
@@ -13,11 +17,24 @@ const Signup = () => {
   };
 
   const onclick = () => {
-    if (data.password !== data.passwordChack) {
-      alert("비밀번호가 일치하지 않습니다");
+    if (data.username === "" || data.password === "") {
+      toast.error("내용을 채워라 뚜쒸");
       return;
     }
-    console.log(data);
+
+    if (data.password !== data.passwordChack) {
+      toast.error("비밀번호가 일치하지 않습니다");
+      return;
+    }
+
+    signup({ username: data.username, password: data.password })
+      .then(() => {
+        toast.success("회원가입 성공 👍");
+        navigate("/login");
+      })
+      .catch((err) => {
+        toast.error(err.response.data.message);
+      });
   };
 
   return (

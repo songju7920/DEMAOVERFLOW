@@ -7,8 +7,6 @@ const Header = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  console.log(location.pathname === "/about");
-
   const moveToAbout = () => {
     navigate("/about");
   };
