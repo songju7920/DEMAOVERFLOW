@@ -18,12 +18,8 @@ public class CustomUserDetail implements UserDetails {
 
     public long getUser_id() { return userId; }
     @Override
-    public String getPassword() {
-        return null;
-    }
+    public String getPassword() { return null; }
 
     @Override
-    public String getUsername() {
-        return null;
-    }
+    public String getUsername() { return String.valueOf(userId); }
 }

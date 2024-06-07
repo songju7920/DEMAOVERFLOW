@@ -1,5 +1,6 @@
 package org.example.demaoverflow_backend.domain.user.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.example.demaoverflow_backend.domain.user.dto.request.LoginRequestDto;
 import org.example.demaoverflow_backend.domain.user.dto.request.SignupRequestDto;
@@ -43,6 +44,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public LoginRespondDto login(LoginRequestDto loginRequestDto) {
         String username = loginRequestDto.username();
         String password = loginRequestDto.password();
