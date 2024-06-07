@@ -28,6 +28,8 @@ public class Post {
     @JoinColumn(name = "userId", nullable = false)
     User user;
 
+    protected Post () {}
+
     @Builder
     public Post(String title, String contents, User user) {
         this.title = title;
