@@ -1,9 +1,10 @@
+import MDEditor from "@uiw/react-md-editor";
 import React from "react";
 
 interface props {
   nickname: String;
   createAt: String;
-  contents: String;
+  contents: string;
 }
 
 const CommentDetail = ({ nickname, createAt, contents }: props) => {
@@ -18,7 +19,9 @@ const CommentDetail = ({ nickname, createAt, contents }: props) => {
       </div>
       <div className="mt-[0.5rem] mb-[0.8rem] flex">
         <div className="w-[0.05rem] mx-[1.5rem] h-auto bg-black" />
-        <p className="ml-[0.7rem] mt-[0.3rem]">{contents}</p>
+        <div data-color-mode="light" className="w-full px-[1rem]">
+          <MDEditor.Markdown source={contents} />
+        </div>
       </div>
       <hr className="border-dotted border-[0.01rem]" />
     </div>
