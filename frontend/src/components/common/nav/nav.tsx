@@ -21,7 +21,7 @@ const Nav = ({ curruntPage }: props) => {
 
   return (
     <div className="flex flex-col items-end w-[15rem] py-[2rem] y-full border-r-[0.09rem] border-black hover:cursor-pointer">
-      <NavBtn img={HomeImg} text={"My Page"} active={curruntPage === "home"} clickEvent={onClick} />
+      {/* <NavBtn img={HomeImg} text={"My Page"} active={curruntPage === "home"} clickEvent={onClick} /> */}
       <NavBtn img={Question} text={"Question"} active={curruntPage === "question"} clickEvent={onClick} />
     </div>
   );
