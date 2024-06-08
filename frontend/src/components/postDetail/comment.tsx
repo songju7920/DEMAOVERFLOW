@@ -4,7 +4,7 @@ import React from "react";
 interface props {
   nickname: String;
   createAt: String;
-  contents: string;
+  contents: String;
 }
 
 const CommentDetail = ({ nickname, createAt, contents }: props) => {
@@ -18,7 +18,6 @@ const CommentDetail = ({ nickname, createAt, contents }: props) => {
         </div>
       </div>
       <div className="mt-[0.5rem] mb-[0.8rem] flex">
-        <div className="w-[0.05rem] mx-[1.5rem] h-auto bg-black" />
         <div data-color-mode="light" className="w-full px-[1rem]">
           <MDEditor.Markdown source={contents} />
         </div>

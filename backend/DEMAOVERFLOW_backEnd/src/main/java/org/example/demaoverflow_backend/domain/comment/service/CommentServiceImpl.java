@@ -2,6 +2,8 @@ package org.example.demaoverflow_backend.domain.comment.service;
 
 import lombok.RequiredArgsConstructor;
 import org.example.demaoverflow_backend.domain.comment.dto.request.CreateCommentRequestDto;
+import org.example.demaoverflow_backend.domain.comment.dto.respond.GetComment;
+import org.example.demaoverflow_backend.domain.comment.dto.respond.GetCommentListRespondDto;
 import org.example.demaoverflow_backend.domain.comment.model.Comment;
 import org.example.demaoverflow_backend.domain.comment.repository.CommentRepository;
 import org.example.demaoverflow_backend.domain.post.exception.PostNotExists;
@@ -14,7 +16,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -41,5 +45,22 @@ public class CommentServiceImpl implements CommentService{
                         .user(user)
                         .post(post)
                         .build());
+    }
+
+    @Override
+    public GetCommentListRespondDto getCommentList(long postId) {
+        List<Comment> comments = commentRepository.findCommentByPost(postRepository.searchByPostId(postId).orElseThrow(
+                () -> PostNotExists.Exception
+        ));
+
+        List<GetComment> commentList = new ArrayList<>();
+        for (Comment comment : comments) {
+            commentList.add(new GetComment(
+                    comment.getUser().getUsername(),
+                    comment.getContents(),
+                    comment.getCreatedAt()));
+        }
+
+        return new GetCommentListRespondDto(commentList);
     }
 }

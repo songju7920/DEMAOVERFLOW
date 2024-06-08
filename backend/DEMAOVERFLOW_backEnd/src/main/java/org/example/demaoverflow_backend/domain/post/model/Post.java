@@ -22,13 +22,13 @@ public class Post {
     @Column(nullable = false)
     long postId;
 
-    @Column(length = 30, nullable = false)
+    @Column(length = 100, nullable = false)
     String title;
 
     @Column(columnDefinition = "TEXT", nullable = false)
     String contents;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "userId", nullable = false)
     User user;
 

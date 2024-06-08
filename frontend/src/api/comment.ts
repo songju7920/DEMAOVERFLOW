@@ -9,3 +9,7 @@ export const createComment = async (data) => {
     }
   });
 };
+
+export const getCommentList = async (postId) => {
+  return await axios.get(`${basePath}/get/${postId}`);
+};

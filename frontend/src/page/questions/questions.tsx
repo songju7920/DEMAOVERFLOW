@@ -46,7 +46,7 @@ const Questions = () => {
   };
 
   const makePagination = () => {
-    console.log(page);
+    console.log(questions.length);
     const result: JSX.Element[] = [<Pagination pageNum={page} active={true} clickEvent={onClick} />];
     for (let i = 1; i < 5; i++) {
       if (result.length == 5) break;
@@ -73,10 +73,11 @@ const Questions = () => {
       .catch((err) => {
         toast.error(err);
       });
-
-    // 페이지네이션 생성 & 불러오기
-    makePagination();
   }, [page, orderBy]);
+
+  useEffect(() => {
+    makePagination();
+  }, [questions]);
 
   return (
     <div className="w-full h-dvh">

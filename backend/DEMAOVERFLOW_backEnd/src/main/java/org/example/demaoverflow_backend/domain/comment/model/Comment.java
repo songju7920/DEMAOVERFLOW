@@ -24,11 +24,11 @@ public class Comment {
     @Column(nullable = false)
     String createdAt;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "userId", nullable = false)
     User user;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "postId", nullable = false)
     Post post;
 

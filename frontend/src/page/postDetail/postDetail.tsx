@@ -4,19 +4,19 @@ import MDEditor, { title } from "@uiw/react-md-editor";
 import CommentDetail from "../../components/postDetail/comment.tsx";
 import { useNavigate, useParams } from "react-router-dom";
 import { getDetail } from "../../api/post.ts";
-import { createComment } from "../../api/comment.ts";
+import { createComment, getCommentList } from "../../api/comment.ts";
 import { toast } from "react-toastify";
 
 interface comment {
   username: String;
   contents: String;
-  createdAt: String;
+  createAt: String;
 }
 
 interface post {
   title: String;
   contents: string;
-  createdAt: String;
+  createAt: String;
   views: number;
   username: string;
 }
@@ -29,7 +29,7 @@ const PostDetail = () => {
   const [postData, setPostData] = useState<post>({
     title: "내용이 불러와지지 않은것 같습니다. 새로고침을 시도하세요.",
     contents: "### 내용이 불러와지지 않은것 같습니다. 새로고침을 시도하세요.",
-    createdAt: "",
+    createAt: "",
     views: 0,
     username: ""
   });
@@ -39,6 +39,11 @@ const PostDetail = () => {
   useEffect(() => {
     getDetail(postId).then((data) => {
       setPostData(data.data);
+    });
+
+    getCommentList(postId).then((res) => {
+      console.log(res.data.commentList);
+      setComments(res.data.commentList);
     });
   }, []);
 
@@ -69,12 +74,12 @@ const PostDetail = () => {
       <div className="flex flex-col items-center w-full h-[43rem] py-[3rem] overflow-scroll">
         <div className="flex flex-col align-top w-[46rem] h-[4rem]">
           <p className="text-2xl font-bold">{postData.title}</p>
-          <div className="flex w-[22rem] justify-between">
-            <div className="flex">
+          <div className="flex">
+            <div className="flex mr-[0.5rem]">
               <p className="mr-[0.4rem] text-818181">Asked in</p>
-              <p>{postData.createdAt}</p>
+              <p>{postData.createAt}</p>
             </div>
-            <div className="flex">
+            <div className="flex mr-[0.5rem]">
               <p className="mr-[0.4rem] text-818181">writed by</p>
               <p>{postData.username}</p>
             </div>
@@ -95,8 +100,8 @@ const PostDetail = () => {
             ) : (
               <p className="font-semibold text-818181">{comments.length}개의 답변이 있습니다.</p>
             )}
-            {comments.map(({ username, contents, createdAt }: comment) => (
-              <CommentDetail nickname={username} createAt={createdAt} contents={contents}></CommentDetail>
+            {comments.map(({ username, contents, createAt }: comment) => (
+              <CommentDetail nickname={username} createAt={createAt} contents={contents}></CommentDetail>
             ))}
           </div>
         </div>
