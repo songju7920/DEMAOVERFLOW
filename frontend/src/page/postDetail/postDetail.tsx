@@ -4,6 +4,8 @@ import MDEditor, { title } from "@uiw/react-md-editor";
 import CommentDetail from "../../components/postDetail/comment.tsx";
 import { useNavigate, useParams } from "react-router-dom";
 import { getDetail } from "../../api/post.ts";
+import { createComment } from "../../api/comment.ts";
+import { toast } from "react-toastify";
 
 interface comment {
   username: String;
@@ -34,19 +36,31 @@ const PostDetail = () => {
   const [comments, setComments] = useState<comment[]>([]);
   const [commentContents, setCommentContents] = useState("");
 
-  // api 연동
   useEffect(() => {
-    getDetail(postId)
-      .then((data) => {
-        setPostData(data.data);
-        console.log(data.data);
-      })
-      .catch();
+    getDetail(postId).then((data) => {
+      setPostData(data.data);
+    });
   }, []);
 
-  // api 연동
   const postComment = () => {
-    if (!localStorage.getItem("accessToken")) navigate("/login");
+    if (!localStorage.getItem("accessToken")) {
+      navigate("/login");
+      return;
+    }
+
+    if (commentContents == "") {
+      toast.error("내용을 입력해주세요");
+      return;
+    }
+
+    createComment({ postId: Number(postId), contents: commentContents })
+      .then(() => {
+        toast.success("댓글 등록이 완료되었습니다 😁");
+        navigate(0);
+      })
+      .catch((err) => {
+        toast.error(err.response.data.message);
+      });
   };
 
   return (
