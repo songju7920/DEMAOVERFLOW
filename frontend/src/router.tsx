@@ -6,6 +6,7 @@ import About from "./page/about/about.tsx";
 import Login from "./page/login/login.tsx";
 import Signup from "./page/signup/signup.tsx";
 import CreatePost from "./page/createPost/createPost.tsx";
+import PostDetail from "./page/postDetail/postDetail.tsx";
 
 const Router = () => {
   return (
@@ -16,6 +17,7 @@ const Router = () => {
       <Route path="/signup" element={<Signup />} />
       <Route path="/login" element={<Login />} />
       <Route path="/createPost" element={<CreatePost />} />
+      <Route path="/question/:postId" element={<PostDetail />} />
       <Route path="*" element={<NotFoundError />} />
     </Routes>
   );
