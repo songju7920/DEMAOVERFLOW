@@ -8,6 +8,12 @@ const Header = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
+  const [keyword, setKeyword] = useState("");
+
+  const onChange = (e) => {
+    setKeyword(e.nativeEvent.target.value);
+  };
+
   const moveToAbout = () => {
     navigate("/about");
   };
@@ -21,7 +27,8 @@ const Header = () => {
   };
 
   const moveToQuestions = () => {
-    navigate("/questions?page=1");
+    navigate(`/questions?page=1&keyword=${keyword}`);
+    navigate(0);
   };
 
   const logout = () => {
@@ -48,6 +55,7 @@ const Header = () => {
           <input
             placeholder="Search anything you want"
             className="border-[0.09rem] border-black px-[2.5rem] w-[40rem] h-[3rem] rounded-xl placeholder:font-semibold placeholder:text-B9B9B9 placeholder:select-none"
+            onChange={onChange}
           />
         </div>
         {!localStorage.getItem("accessToken") ? (

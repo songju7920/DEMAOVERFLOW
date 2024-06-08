@@ -21,7 +21,9 @@ const Questions = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const page = parseInt(location.search.split("=")[1]);
+  const queryStrings = location.search.split("&");
+  const page = parseInt(queryStrings[0].split("=")[1]);
+  const keyword = queryStrings[1] ? queryStrings[1].split("=")[1] : "";
 
   const [orderBy, setOrderBy] = useState("DESC");
   const [questions, setQuestions] = useState<question[]>([]);
@@ -29,7 +31,7 @@ const Questions = () => {
   const [showDropdown, setShowDropdown] = useState(false);
 
   const onClick = (num) => {
-    navigate(`/questions?page=${num}`);
+    navigate(`/questions?page=${num}${keyword != "" && `&keyword=${keyword}`}`);
   };
 
   const changeOrderBy = (text) => {
@@ -65,10 +67,14 @@ const Questions = () => {
   };
 
   useEffect(() => {
+    console.log(keyword);
     // 포스트 데이터 불러오기
-    getPosts("")
+    getPosts(keyword)
       .then((res) => {
         setQuestions(res.data.posts);
+        if (orderBy == "DESC") {
+          setQuestions((prevQuestion) => prevQuestion.reverse());
+        }
       })
       .catch((err) => {
         toast.error(err);
