@@ -12,13 +12,13 @@ interface props {
 const QuestionList = ({ postId, title, writer, view, createAt }: props) => {
   const navigate = useNavigate();
 
-  onclick = () => {
+  const onclick = () => {
     navigate(`/question/${postId}`);
   };
 
   return (
     <>
-      <div className="flex justify-between px-[3rem] py-[0.5rem] w-full hover:cursor-pointer">
+      <div className="flex justify-between px-[3rem] py-[0.5rem] w-full hover:cursor-pointer" onClick={onclick}>
         <div className="flex w-[35rem] text-646464 text-base">{title}</div>
         <div className="flex justify-center w-[10rem] text-646464 text-base">{writer}</div>
         <div className="flex justify-center w-[10rem] text-646464 text-base">{view}</div>

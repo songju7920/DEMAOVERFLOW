@@ -30,7 +30,7 @@ const Login = () => {
         const { accessToken, refreshToken } = res.data;
         localStorage.setItem("accessToken", accessToken);
         localStorage.setItem("refreshToken", refreshToken);
-        navigate("/questions?page=1");
+        navigate(-1);
       })
       .catch((err) => {
         const { message } = err.response.data;

@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import Logo from "../../../asset/img/logo.svg";
 import Search from "../../../asset/img/search.svg";
 import { useLocation, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Header = () => {
   const location = useLocation();
@@ -21,6 +22,12 @@ const Header = () => {
 
   const moveToQuestions = () => {
     navigate("/questions?page=1");
+  };
+
+  const logout = () => {
+    localStorage.removeItem("accessToken");
+    toast.success("로그아웃이 완료되었습니다.");
+    navigate("/");
   };
 
   return (
@@ -43,12 +50,20 @@ const Header = () => {
             className="border-[0.09rem] border-black px-[2.5rem] w-[40rem] h-[3rem] rounded-xl placeholder:font-semibold placeholder:text-B9B9B9 placeholder:select-none"
           />
         </div>
-        <div className="flex items-center justify-center bg-F8DB43 rounded-xl w-[6rem] h-[3rem] font-bold hover:cursor-pointer select-none" onClick={moveToLogin}>
-          로그인
-        </div>
-        <div className="flex items-center justify-center bg-F8DB43 rounded-xl w-[6rem] h-[3rem] font-bold hover:cursor-pointer select-none" onClick={moveToSignup}>
-          회원가입
-        </div>
+        {!localStorage.getItem("accessToken") ? (
+          <div className="flex justify-between w-[13rem]">
+            <div className="flex items-center justify-center bg-F8DB43 rounded-xl w-[6rem] h-[3rem] font-bold hover:cursor-pointer select-none" onClick={moveToLogin}>
+              로그인
+            </div>
+            <div className="flex items-center justify-center bg-F8DB43 rounded-xl w-[6rem] h-[3rem] font-bold hover:cursor-pointer select-none" onClick={moveToSignup}>
+              회원가입
+            </div>
+          </div>
+        ) : (
+          <div className="flex items-center justify-center bg-F8DB43 rounded-xl w-[6rem] h-[3rem] font-bold hover:cursor-pointer select-none" onClick={logout}>
+            로그아웃
+          </div>
+        )}
       </div>
     </div>
   );
