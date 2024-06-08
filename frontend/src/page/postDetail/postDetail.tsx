@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import Header from "../../components/common/header/header.tsx";
 import MDEditor, { title } from "@uiw/react-md-editor";
 import CommentDetail from "../../components/postDetail/comment.tsx";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { getDetail } from "../../api/post.ts";
 
 interface comment {
   username: String;
@@ -21,6 +22,8 @@ interface post {
 const PostDetail = () => {
   const navigate = useNavigate();
 
+  const { postId } = useParams();
+
   const [postData, setPostData] = useState<post>({
     title: "내용이 불러와지지 않은것 같습니다. 새로고침을 시도하세요.",
     contents: "### 내용이 불러와지지 않은것 같습니다. 새로고침을 시도하세요.",
@@ -32,7 +35,14 @@ const PostDetail = () => {
   const [commentContents, setCommentContents] = useState("");
 
   // api 연동
-  useEffect(() => {}, []);
+  useEffect(() => {
+    getDetail(postId)
+      .then((data) => {
+        setPostData(data.data);
+        console.log(data.data);
+      })
+      .catch();
+  }, []);
 
   // api 연동
   const postComment = () => {

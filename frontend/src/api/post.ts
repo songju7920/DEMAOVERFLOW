@@ -13,3 +13,7 @@ export const createPost = async (data) => {
 export const getPosts = async (keyword) => {
   return await axios.get(`${basePath}/search?keyword=${keyword}`);
 };
+
+export const getDetail = async (postId) => {
+  return await axios.get(`${basePath}/detail/${postId}`);
+};

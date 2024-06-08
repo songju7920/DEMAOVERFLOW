@@ -1,9 +1,12 @@
 package org.example.demaoverflow_backend.domain.post.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.example.demaoverflow_backend.domain.post.dto.request.CreatePostRequest;
+import org.example.demaoverflow_backend.domain.post.dto.respond.PostDetailRespondDto;
 import org.example.demaoverflow_backend.domain.post.dto.respond.SearchPostsRespond;
 import org.example.demaoverflow_backend.domain.post.dto.respond.SearchedPost;
+import org.example.demaoverflow_backend.domain.post.exception.PostNotExists;
 import org.example.demaoverflow_backend.domain.post.model.Post;
 import org.example.demaoverflow_backend.domain.post.repository.PostRepository;
 import org.example.demaoverflow_backend.domain.user.exception.UserNotExists;
@@ -63,5 +66,20 @@ public class PostServiceImpl implements PostService {
         }
 
         return new SearchPostsRespond(processedPosts);
+    }
+
+    @Override
+    public PostDetailRespondDto getDetail(long postId) {
+        Post post = postRepository.searchByPostId(postId).orElseThrow(() -> PostNotExists.Exception);
+        post.setViews(post.getViews() + 1);
+
+        postRepository.save(post);
+
+        return new PostDetailRespondDto(
+                post.getTitle(),
+                post.getContents(),
+                post.getCreatedAt(),
+                post.getViews(),
+                post.getUser().getUsername());
     }
 }
